@@ -8,25 +8,20 @@ class node
 		int data;
 		node*next;
 };
-class stack
-{
+class stack{
 	public:
 		node*head;
 		node*tail;
-		public:
-	stack()
-{	
-		head=NULL;
-		tail=NULL;
-
-}
-    void push(char n);
-    char pop ();
-    char top ();
-    void print();	
+	public:
+		stack(){	
+			head=NULL;
+			tail=NULL;
+		}
+    	void push(char n);
+    	char pop ();
+    	char top ();	
 };
-void stack::push(char n)
-{
+void stack::push(char n){
    	node* tptr;
 	tptr = head;
 
@@ -40,102 +35,74 @@ void stack::push(char n)
 		head = nptr;
 		tail = nptr;
 		tail->next=NULL;
-}
+	}
 	
 	else {
 		while(tptr->next!=NULL)
 		{
 			tptr=tptr->next;
 			
-     }
+    	}
       tptr->next=nptr;
 	}
 }
-char stack::pop()
-{
-	node*tptr=head;
-	node*pptr=head;
+char stack::pop(){
+	node *current = head;
+	node *previous = head;
 	
-	if(head==NULL)
-	{
-		cout<<endl<<"There is nothing to pop in the stack"<<endl;	
+	if(head == NULL){
 		return -1;
 	}
-	else
-	{
-		int i=0;
-		while(tptr->next!=NULL)
-		{
-			tptr=tptr->next;
+	else{
+		int i = 0;
+		while(current -> next != NULL){
+			current = current -> next;
 			i++;
 		}
 		
-		if(tptr==head)
-		{
-			int n=tptr->data;
-			head=head->next;
-			//cout<<endl<<"Result of poping"<<endl;
-			//cout<<n;
+		if(current == head){
+			int n = current -> data;
+			head = head -> next;
 			return n; 
-			
 		}
-		else 
-		{
-			while(i>1)
-			{
-				pptr=pptr->next;
+		else{
+			while(i > 1){
+				previous = previous -> next;
 				i--;
 			}
-			int n=tptr->data;
-			pptr->next=tptr->next;
-			//cout<<endl<<"Result of poping"<<endl;
-			//cout<<n;
+			int n = current -> data;
+			previous -> next = current -> next;
 	    	return n ;
-	}
+		}
 		
 	}
 }
-char stack::top()
-{
-	node*tptr=head;
-	node*pptr=head;
+char stack::top(){
+	node *current = head;
+	node *previous = head;
 	
-	if(head==NULL)
-	{
-		cout<<endl<<"There is nothing to pop in the stack"<<endl;	
+	if(head == NULL){
 		return -1;
 	}
-	else
-	{
-		int i=0;
-		while(tptr->next!=NULL)
-		{
-			tptr=tptr->next;
+	else{
+		int i = 0;
+		while(current -> next != NULL){
+			current = current -> next;
 			i++;
 		}
 		
-		if(tptr==head)
-		{
-			int n=tptr->data;
-			//head=head->next;
-			//cout<<endl<<"Result of poping"<<endl;
-			//cout<<n;
+		if(current == head){
+			int n = current -> data;
 			return n; 
-			
 		}
-		else 
-		{
-			while(i>1)
-			{
-				pptr=pptr->next;
+		else{
+			while(i > 1){
+				previous = previous -> next;
 				i--;
 			}
-			int n=tptr->data;
-			//pptr->next=tptr->next;
-			//cout<<endl<<"Result of poping"<<endl;
-			//cout<<n;
+			int n = current -> data;
 	    	return n ;
-	}
+		}
 		
 	}
 }
@@ -157,6 +124,7 @@ int preseidence(char opera){
 }
 int postfix(){
 	int c = 0;
+	int b = 0;
 	stack P;
 	char temp;
 	int j = 0;
@@ -193,10 +161,12 @@ int postfix(){
 					if(infix[i] == '('){
 						P.push(infix[i]);
 						c++;
+						b++;
 					}
 					if(infix[i] == ')'){
 						temp = P.pop();
 						c--;
+						b++;
 						while(temp != '('){
 							operand[j++] = temp;
 							temp = P.pop();
@@ -207,21 +177,17 @@ int postfix(){
 			}
 		}
 	}
-//	temp = P.top();
-//	while(temp != 'z'){
-//		operand[j++] = P.pop();
-//		temp = P.top();
-//	}
 	int n = 0;
-	while(n<=c){
+	while(n<c){
 		operand[j++] = P.pop();
 		n++;
 	}
+	string postfixString = "";
 	cout << "postfix expression is: ";
-	for(int i=0; i < length; i++){
+	for(int i=0; i < length - b; i++){
 		cout << operand[i];
+		postfixString = postfixString + operand[i];
 	}
-	cout << endl<< operand;
 
 }
 int main(){
